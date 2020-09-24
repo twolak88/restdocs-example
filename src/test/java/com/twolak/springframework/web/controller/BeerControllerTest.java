@@ -46,7 +46,7 @@ import com.twolak.springframework.repositories.BeerRepository;
 import com.twolak.springframework.web.model.BeerDto;
 import com.twolak.springframework.web.model.BeerStyleEnum;
 
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs//(uriScheme = "https", uriHost = "127.0.0.1", uriPort = 80)
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(BeerController.class)
 @ComponentScan(basePackages = "com.twolak.springframework.web.mappers")
