@@ -3,6 +3,9 @@ package com.twolak.springframework.web.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,10 +16,9 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -32,7 +34,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +80,7 @@ class BeerControllerTest {
                 		pathParameters(
                 				parameterWithName("beerId").description("UUID of desired beer to get.")
                 				),
-                		requestParameters(
+                		requestParameters( 
                 				parameterWithName("iscold").description("is Beer cold Query param")
                 				),
                 		responseFields(
@@ -104,7 +105,20 @@ class BeerControllerTest {
         mockMvc.perform(post("/api/v1/beer/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(document("v1/beer",
+                		requestFields(
+                				fieldWithPath("id").ignored(),
+                				fieldWithPath("version").ignored(),
+                				fieldWithPath("createdDate").ignored(),
+                				fieldWithPath("lastModifiedDate").ignored(),
+                				fieldWithPath("beerName").description("Name of the beer"),
+                				fieldWithPath("beerStyle").description("Style of beer"),
+                				fieldWithPath("upc").description("Beer UPC"),
+                				fieldWithPath("price").description("Beer price"),
+                				fieldWithPath("quantityOnHand").ignored()
+                				)
+                		));
     }
 
     @Test
