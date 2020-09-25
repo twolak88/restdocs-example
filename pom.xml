@@ -135,11 +135,11 @@
 						<configuration>
 							<backend>html</backend>
 							<doctype>book</doctype>
-							<attributes>
+							<!-- <attributes>
 								<snippets>${snippetsDirectory}</snippets>
 							</attributes>
 							<sourceDirectory>src/main/asciidoc</sourceDirectory>
-							<outputDirectory>target/generated-docs</outputDirectory>
+							<outputDirectory>target/generated-docs</outputDirectory> -->
 						</configuration>
 					</execution>
 				</executions>
